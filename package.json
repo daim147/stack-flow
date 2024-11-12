@@ -15,9 +15,11 @@
 		"next": "15.0.2",
 		"prettier": "^3.3.3",
 		"react": "19.0.0-rc-02c0e824-20241028",
-		"react-dom": "19.0.0-rc-02c0e824-20241028"
+		"react-dom": "19.0.0-rc-02c0e824-20241028",
+		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
+		"@tailwindcss/typography": "^0.5.15",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
