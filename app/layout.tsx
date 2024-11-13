@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
+
 import './globals.css';
+import ThemeProvider from '../context/Theme';
 
 const inter = localFont({
 	src: './fonts/InterVF.ttf',
@@ -29,8 +31,17 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
-			<body className={`${inter.className} ${spaceGrotesk.variable} antialiased`}>{children}</body>
+		<html suppressHydrationWarning lang='en'>
+			<body className={`${inter.className} ${spaceGrotesk.variable} antialiased`}>
+				<ThemeProvider
+					attribute='class'
+					enableSystem
+					defaultTheme='system'
+					disableTransitionOnChange
+				>
+					{children}
+				</ThemeProvider>
+			</body>
 		</html>
 	);
 }
