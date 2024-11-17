@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 
 import './globals.css';
-import Navbar from '@/components/navigation/navbar';
+
+import { auth } from '@/auth';
+import { Toaster } from '@/components/ui/toaster';
 
 import ThemeProvider from '../context/Theme';
 
@@ -27,24 +30,27 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await auth();
 	return (
 		<html suppressHydrationWarning lang='en'>
-			<body className={`${inter.className} ${spaceGrotesk.variable} antialiased`}>
-				<ThemeProvider
-					attribute='class'
-					enableSystem
-					defaultTheme='system'
-					disableTransitionOnChange
-				>
-					<Navbar />
-					{children}
-				</ThemeProvider>
-			</body>
+			<SessionProvider session={session}>
+				<body className={`${inter.className} ${spaceGrotesk.variable} antialiased`}>
+					<ThemeProvider
+						attribute='class'
+						enableSystem
+						defaultTheme='system'
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
+					<Toaster />
+				</body>
+			</SessionProvider>
 		</html>
 	);
 }
