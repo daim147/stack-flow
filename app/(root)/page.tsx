@@ -1,11 +1,10 @@
 import { auth, signOut } from '@/auth';
 import { Button } from '@/components/ui/button';
-import ROUTES from '@/constant/route';
+import ROUTES from '@/constant/routes';
 
 export default async function Home() {
 	const session = await auth();
 	console.log('🚀 ~ Home ~ session:', session);
-	console.log('Hello from Server Component');
 
 	return (
 		<div>
