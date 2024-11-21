@@ -1,7 +1,6 @@
 'use client';
 import { SheetClose } from '@/components/ui/sheet';
 import { sidebarLinks } from '@/constant';
-import ROUTES from '@/constant/routes';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,7 +16,7 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
 				const isActive =
 					(pathname.includes(item.route) && item.route.length > 1) || pathname === item.route;
 
-				if (item.route === ROUTES.PROFILE) {
+				if (item.route === '/profile') {
 					if (userId) item.route = `${item.route}/${userId}`;
 					else return null;
 				}
