@@ -50,10 +50,13 @@ const LocalSearch = ({ route, imgSrc, otherClasses, placeholder }: Props) => {
 		<div
 			className={`background-light800_darkgradient flex min-h-[56px] grow gap-4 items-center px-4 rounded-[10px] ${otherClasses}`}
 		>
-			<Image src={imgSrc} alt='search' width={24} height={24} className='cursor-pointer' />
+			<label htmlFor='search'>
+				<Image src={imgSrc} alt='search' width={24} height={24} className='cursor-pointer' />
+			</label>
 			<Input
 				placeholder={placeholder}
 				type='text'
+				id='search'
 				value={searchQuery}
 				onChange={(e) => setSearchQuery(e.target.value)}
 				className='paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none'

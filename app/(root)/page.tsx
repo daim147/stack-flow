@@ -1,3 +1,5 @@
+import QuestionCard from '@/components/card/QuestionCard';
+import HomeFilter from '@/components/filters/HomeFilter';
 import LocalSearch from '@/components/search/LocalSearch';
 import { Button } from '@/components/ui/button';
 import { questions } from '@/constant';
@@ -31,10 +33,10 @@ export default async function Home({ searchParams }: SearchParams) {
 					placeholder='Search questions...'
 				/>
 			</section>
-			HomeFilter
+			<HomeFilter />
 			<div className='mt-10 flex flex-col w-full gap-6'>
 				{filteredQuestions.map((question) => (
-					<p key={question._id}>{question.title}</p>
+					<QuestionCard key={question._id} question={question} />
 				))}
 			</div>
 		</>
