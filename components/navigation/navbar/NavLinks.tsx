@@ -9,12 +9,14 @@ import React from 'react';
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
 	const pathname = usePathname();
+	console.log('🚀 ~ NavLinks ~ pathname:', pathname);
 	const userId = '1234';
 	return (
 		<>
 			{sidebarLinks.map((item) => {
 				const isActive =
 					(pathname.includes(item.route) && item.route.length > 1) || pathname === item.route;
+				console.log('🚀 ~ {sidebarLinks.map ~ isActive:', isActive, pathname, item.route);
 
 				if (item.route === '/profile') {
 					if (userId) item.route = `${item.route}/${userId}`;
