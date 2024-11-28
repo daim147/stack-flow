@@ -18,7 +18,7 @@ const UserSchema = new Schema<IUser>(
 		username: { type: String, required: true, unique: true },
 		email: { type: String, required: true, unique: true },
 		bio: { type: String },
-		image: { type: String },
+		image: { type: String, default: 'https://randomuser.me/api/portraits/lego/1.jpg' },
 		location: { type: String },
 		portfolio: { type: String },
 		reputation: { type: Number, default: 0 },
