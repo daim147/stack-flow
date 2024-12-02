@@ -4,9 +4,15 @@ import { IUser } from '@/database/user.model';
 import { fetchHandler } from './handler/fetch';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000/api';
-console.log('🚀 ~ process.env:', process.env);
 
 export const api = {
+	auth: {
+		signInWithOAuth: (data: SignInWithOAuthParams) =>
+			fetchHandler(`${API_BASE_URL}/auth/signin-with-oauth`, {
+				method: 'POST',
+				body: JSON.stringify(data),
+			}),
+	},
 	users: {
 		getAll: () => fetchHandler(`${API_BASE_URL}/users`),
 		getById: (id: string) => fetchHandler(`${API_BASE_URL}/users/${id}`),
