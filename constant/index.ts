@@ -1,5 +1,3 @@
-import ROUTES from './routes';
-
 export enum FORM_TYPES {
 	SIGN_IN = 'SIGN_IN',
 	SIGN_UP = 'SIGN_UP',

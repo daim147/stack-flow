@@ -1,28 +1,24 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { DefaultValues, FieldValues, Path, SubmitHandler, useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
 
-import { Button } from '../ui/button';
-import {
-	FormField,
-	FormItem,
-	FormLabel,
-	FormControl,
-	FormDescription,
-	FormMessage,
-	Form,
-} from '../ui/form';
-import { Input } from '../ui/input';
 import { FORM_TYPES } from '@/constant';
-import Link from 'next/link';
 import ROUTES from '@/constant/routes';
+import { toast } from '@/hooks/use-toast';
+import { ActionResponse } from '@/types/global';
+
+import { Button } from '../ui/button';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '../ui/form';
+import { Input } from '../ui/input';
 
 interface AuthFormProps<T extends FieldValues> {
 	schema: ZodType<T>;
 	defaultValues: T;
-	onSubmit: (data: T) => Promise<{ success: boolean }>;
+	onSubmit: (data: T) => Promise<ActionResponse>;
 	formType: FORM_TYPES;
 }
 
@@ -37,7 +33,28 @@ export function AuthForm<T extends FieldValues>({
 		defaultValues: defaultValues as DefaultValues<T>,
 	});
 
-	const handleSubmit: SubmitHandler<T> = async () => {};
+	const router = useRouter();
+
+	const handleSubmit: SubmitHandler<T> = async (data) => {
+		const result = await onSubmit(data);
+
+		if (result?.success) {
+			toast({
+				title: 'Success',
+				description:
+					formType === FORM_TYPES.SIGN_IN ? 'Signed in successfully' : 'Signed up successfully',
+				variant: 'default',
+			});
+
+			router.push(ROUTES.HOME);
+		} else {
+			toast({
+				title: `Error ${result?.status}`,
+				description: result?.error?.message || 'An error occurred',
+				variant: 'destructive',
+			});
+		}
+	};
 
 	const buttonText = formType === FORM_TYPES.SIGN_IN ? 'Sign in' : 'Sign up';
 
@@ -51,7 +68,7 @@ export function AuthForm<T extends FieldValues>({
 							control={form.control}
 							name={fieldName as Path<T>}
 							render={({ field }) => (
-								<FormItem className='flex flex-col gap-2.5 w-full'>
+								<FormItem className='flex w-full flex-col gap-2.5'>
 									<FormLabel className='paragraph-medium text-dark400_light700'>
 										{field.name === 'email'
 											? 'Email Address'
@@ -73,7 +90,7 @@ export function AuthForm<T extends FieldValues>({
 				})}
 				<Button
 					disabled={form.formState.isSubmitting}
-					className='primary-gradient paragraph-medium min-h-12 w-full rounded-2 py-3 font-inter px-4 !text-light-900'
+					className='primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900'
 				>
 					{form.formState.isSubmitting
 						? formType === FORM_TYPES.SIGN_IN
@@ -83,7 +100,7 @@ export function AuthForm<T extends FieldValues>({
 				</Button>
 				{formType === FORM_TYPES.SIGN_IN ? (
 					<p>
-						Don't have an account?{' '}
+						Don&apos;t have an account?{' '}
 						<Link className='paragraph-semibold primary-text-gradient' href={ROUTES.SIGN_UP}>
 							Sign up
 						</Link>{' '}

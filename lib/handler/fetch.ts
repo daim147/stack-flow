@@ -6,12 +6,26 @@ import { RequestError } from '../http-error';
 
 interface FetchOptions extends RequestInit {
 	timeout?: number;
+	headers?: Record<string, string>;
 }
 
 function isError(error: unknown): error is Error {
 	return error instanceof Error;
 }
 
+/**
+ * Fetch handler to make HTTP requests with a timeout and custom headers.
+ *
+ * @template T - The expected response type.
+ * @param {string} url - The URL to fetch.
+ * @param {FetchOptions} [options={}] - Optional fetch options.
+ * @param {number} [options.timeout=5000] - Timeout for the request in milliseconds.
+ * @param {HeadersInit} [options.headers] - Custom headers for the request.
+ * @param {RequestInit} [options.restOptions] - Other fetch options.
+ * @returns {Promise<ActionResponse<T>>} - The response data.
+ * @throws {RequestError} - Throws an error if the response is not ok.
+ * @throws {Error} - Throws an error if an unknown error occurs.
+ */
 export const fetchHandler = async <T>(
 	url: string,
 	options: FetchOptions = {}

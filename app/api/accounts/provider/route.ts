@@ -23,6 +23,8 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ success: true, data: account }, { status: 200 });
 	} catch (error) {
-		return handleError(error, 'api') as APIErrorResponse;
+		const r = handleError(error, 'api') as APIErrorResponse;
+		console.log('🚀 ~ POST ~ r:', r);
+		return r;
 	}
 }

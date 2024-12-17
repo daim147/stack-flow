@@ -1,6 +1,7 @@
-import { techMap } from '@/constant';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+import { techMap } from '@/constant';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -14,6 +15,12 @@ export const getDevIconClassName = (techName: string) => {
 		: 'devicon-devicon-plain colored';
 };
 
+/**
+ * Returns a human-readable string representing the time elapsed since the given date.
+ *
+ * @param date - The date to compare with the current time.
+ * @returns A string representing the time elapsed since the given date, e.g., "2 days ago", "just now".
+ */
 export const getTimeStamp = (date: Date) => {
 	const now = new Date();
 	const secondsAgo = Math.floor((now.getTime() - date.getTime()) / 1000);
