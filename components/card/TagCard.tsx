@@ -2,9 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { Badge } from '../ui/badge';
-import { getDevIconClassName } from '@/lib/utils';
 import ROUTES from '@/constant/routes';
+import { getDevIconClassName } from '@/lib/utils';
+
+import { Badge } from '../ui/badge';
 
 interface Props {
 	_id: string;

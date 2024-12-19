@@ -5,12 +5,12 @@ import mongoose from 'mongoose';
 import { signIn } from '@/auth';
 import Account from '@/database/account.model';
 import User from '@/database/user.model';
-import { ActionResponse, ErrorResponse } from '@/types/global';
+import { ActionResponse } from '@/types/global';
 
-import action from '../handler/action';
-import handleError from '../handler/error';
+import action from '../handlers/action';
+import handleError from '../handlers/error';
 import { NotFoundError } from '../http-error';
-import { SignInSchema, SignUpSchema } from '../validation';
+import { SignInSchema, SignUpSchema } from '../validations';
 
 /**
  * Signs up a user with provided credentials.
@@ -33,7 +33,7 @@ export async function signUpWithCredentials(params: AuthCredentials): Promise<Ac
 	const validatedResult = await action({ params, schema: SignUpSchema });
 
 	if (validatedResult instanceof Error) {
-		return handleError(validatedResult) as ErrorResponse;
+		return handleError(validatedResult);
 	}
 
 	const { name, email, username, password } = validatedResult.params!;
@@ -73,7 +73,7 @@ export async function signUpWithCredentials(params: AuthCredentials): Promise<Ac
 		return { success: true };
 	} catch (error) {
 		await session.abortTransaction();
-		return handleError(error) as ErrorResponse;
+		return handleError(error);
 	} finally {
 		await session.endSession();
 	}
@@ -95,7 +95,7 @@ export async function signInWithCredentials(
 	const validatedResult = await action({ params, schema: SignInSchema });
 
 	if (validatedResult instanceof Error) {
-		return handleError(validatedResult) as ErrorResponse;
+		return handleError(validatedResult);
 	}
 
 	const { email, password } = validatedResult.params!;
@@ -124,6 +124,6 @@ export async function signInWithCredentials(
 		await signIn('credentials', { email, password, redirect: false });
 		return { success: true };
 	} catch (error) {
-		return handleError(error) as ErrorResponse;
+		return handleError(error);
 	}
 }

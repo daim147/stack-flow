@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
+import { ActionResponse, APIErrorResponse, ErrorResponse } from '@/types/global';
+
 import { RequestError, ValidationError } from '../http-error';
 import logger from '../logger';
-
-export type ResponseType = 'api' | 'server';
 
 /**
  * Formats a response object based on the specified response type.
@@ -15,23 +15,30 @@ export type ResponseType = 'api' | 'server';
  * @param errors - An optional object containing detailed error messages.
  * @returns A formatted response object. If the type is 'api', it returns a NextResponse object with JSON content and status. Otherwise, it returns an object with status and error details.
  */
-const formatResponse = (
-	type: ResponseType,
+
+export type ResponseType = 'api' | 'server';
+
+type ReturnType<T = ResponseType> = T extends 'api' ? APIErrorResponse : ErrorResponse;
+
+const formatResponse = <T extends ResponseType>(
+	type: T,
 	status: number,
 	message: string,
 	errors?: Record<string, string[]>
-) => {
-	const responseContent = {
+): ReturnType<T> => {
+	const responseContent: ActionResponse = {
 		success: false,
 		error: {
 			message,
-			detail: errors,
+			details: errors,
 		},
 	};
 
-	return type === 'api'
-		? NextResponse.json(responseContent, { status })
-		: { status, ...responseContent };
+	if (type === 'api') {
+		return NextResponse.json(responseContent, { status }) as ReturnType<T>;
+	} else {
+		return { status, ...responseContent } as ReturnType<T>;
+	}
 };
 
 /**
@@ -42,7 +49,7 @@ const formatResponse = (
  *
  * @returns A formatted response object containing the status code, error message, and any additional error details.
  */
-const handleError = (error: unknown, type: ResponseType = 'server') => {
+function handleError<T extends ResponseType = 'server'>(error: unknown, type: T = 'server' as T) {
 	if (error instanceof RequestError) {
 		console.log('here');
 		logger.error({ err: error }, `${type.toUpperCase()} Error: ${error.message}`);
@@ -68,6 +75,6 @@ const handleError = (error: unknown, type: ResponseType = 'server') => {
 	}
 	logger.error({ err: error }, 'An Unexpected error occurred');
 	return formatResponse(type, 500, 'An Unexpected error occurred');
-};
+}
 
 export default handleError;

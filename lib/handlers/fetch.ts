@@ -1,5 +1,3 @@
-import { ActionResponse } from '@/types/global';
-
 import logger from '../logger';
 import handleError from './error';
 import { RequestError } from '../http-error';
@@ -63,6 +61,6 @@ export const fetchHandler = async <T>(
 		} else {
 			logger.error(`Error fetching ${url}`, error);
 		}
-		return handleError(error, 'api') as ActionResponse<T>;
+		return handleError(error, 'api');
 	}
 };

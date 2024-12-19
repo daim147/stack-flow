@@ -4,7 +4,7 @@ import React from 'react';
 import { AuthForm } from '@/components/forms/AuthForm';
 import { FORM_TYPES } from '@/constant';
 import { signUpWithCredentials } from '@/lib/actions/auth.action';
-import { SignUpSchema } from '@/lib/validation';
+import { SignUpSchema } from '@/lib/validations';
 
 const SignUp = () => {
 	return (

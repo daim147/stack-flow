@@ -2,7 +2,7 @@
 import { AuthForm } from '@/components/forms/AuthForm';
 import { FORM_TYPES } from '@/constant';
 import { signInWithCredentials } from '@/lib/actions/auth.action';
-import { SignInSchema } from '@/lib/validation';
+import { SignInSchema } from '@/lib/validations';
 
 const SignIn = () => {
 	return (

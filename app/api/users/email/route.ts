@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 
 import User from '@/database/user.model';
-import handleError from '@/lib/handler/error';
+import handleError from '@/lib/handlers/error';
 import { NotFoundError, ValidationError } from '@/lib/http-error';
 import connect from '@/lib/mongoose';
-import { UserSchema } from '@/lib/validation';
-import { APIErrorResponse } from '@/types/global';
+import { UserSchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
 	try {
@@ -23,6 +22,6 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ success: true, data: user }, { status: 200 });
 	} catch (error) {
-		return handleError(error, 'api') as APIErrorResponse;
+		return handleError(error, 'api');
 	}
 }

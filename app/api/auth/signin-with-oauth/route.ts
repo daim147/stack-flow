@@ -4,11 +4,10 @@ import slugify from 'slugify';
 
 import Account from '@/database/account.model';
 import User from '@/database/user.model';
-import handleError from '@/lib/handler/error';
+import handleError from '@/lib/handlers/error';
 import { ValidationError } from '@/lib/http-error';
 import connect from '@/lib/mongoose';
-import { SignInWithOAuthSchema } from '@/lib/validation';
-import { APIErrorResponse } from '@/types/global';
+import { SignInWithOAuthSchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
 	const { provider, providerAccountId, user } = await request.json();
@@ -81,7 +80,7 @@ export async function POST(request: Request) {
 		return NextResponse.json({ success: true });
 	} catch (error) {
 		await session.abortTransaction();
-		return handleError(error, 'api') as APIErrorResponse;
+		return handleError(error, 'api');
 	} finally {
 		await session.endSession();
 	}

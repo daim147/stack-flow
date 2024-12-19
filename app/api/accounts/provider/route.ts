@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 
 import Account from '@/database/account.model';
-import handleError from '@/lib/handler/error';
+import handleError from '@/lib/handlers/error';
 import { NotFoundError, ValidationError } from '@/lib/http-error';
 import connect from '@/lib/mongoose';
-import { AccountSchema } from '@/lib/validation';
-import { APIErrorResponse } from '@/types/global';
+import { AccountSchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
 	try {
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ success: true, data: account }, { status: 200 });
 	} catch (error) {
-		const r = handleError(error, 'api') as APIErrorResponse;
+		const r = handleError(error, 'api');
 		console.log('🚀 ~ POST ~ r:', r);
 		return r;
 	}

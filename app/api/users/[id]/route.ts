@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 
 import User from '@/database/user.model';
-import handleError from '@/lib/handler/error';
+import handleError from '@/lib/handlers/error';
 import { NotFoundError } from '@/lib/http-error';
 import connect from '@/lib/mongoose';
-import { UserSchema } from '@/lib/validation';
-import { APIErrorResponse } from '@/types/global';
+import { UserSchema } from '@/lib/validations';
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
@@ -18,7 +17,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
 
 		return NextResponse.json({ success: true, data: user }, { status: 200 });
 	} catch (error) {
-		return handleError(error, 'api') as APIErrorResponse;
+		return handleError(error, 'api');
 	}
 }
 
@@ -33,7 +32,7 @@ export async function Delete(_: Request, { params }: { params: Promise<{ id: str
 
 		return NextResponse.json({ success: true, data: user }, { status: 200 });
 	} catch (error) {
-		return handleError(error, 'api') as APIErrorResponse;
+		return handleError(error, 'api');
 	}
 }
 
@@ -50,6 +49,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 		return NextResponse.json({ success: true, data: user }, { status: 200 });
 	} catch (error) {
-		return handleError(error, 'api') as APIErrorResponse;
+		return handleError(error, 'api');
 	}
 }

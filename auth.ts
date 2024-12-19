@@ -7,8 +7,7 @@ import Google from 'next-auth/providers/google';
 import { IAccountDoc } from './database/account.model';
 import { IUserDoc } from './database/user.model';
 import { api } from './lib/api';
-import { SignInSchema } from './lib/validation';
-import { ActionResponse } from './types/global';
+import { SignInSchema } from './lib/validations';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [
@@ -16,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		Google,
 		Credentials({
 			async authorize(credentials) {
-				console.log('🚀 ~ authorize ~ credentials:', credentials);
+				// console.log('🚀 ~ authorize ~ credentials:', credentials);
 				const validateFields = SignInSchema.safeParse(credentials);
 				if (validateFields.success) {
 					const { email, password } = validateFields.data;
@@ -51,12 +50,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	],
 	callbacks: {
 		async session({ session, token }) {
-			console.log('🚀 ~ session ~ session, token:', session, token);
+			// console.log('🚀 ~ session ~ session, token:', session, token);
 			session.user.id = token.sub as string;
 			return session;
 		},
 		async jwt({ account, token }) {
-			console.log('🚀 ~ jwt ~ account, token:', account, token);
+			// console.log('🚀 ~ jwt ~ account, token:', account, token);
 			if (account) {
 				const { data: existingAccount, success } = (await api.accounts.getByProvider(
 					account.type === 'credentials' ? token.email! : account.providerAccountId
@@ -70,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			return token;
 		},
 		async signIn({ user, account, profile }) {
-			console.log('🚀 ~ signIn ~ user, account, profile:', user, account, profile);
+			// console.log('🚀 ~ signIn ~ user, account, profile:', user, account, profile);
 			if (account?.type === 'credentials') return true;
 			if (!account || !user || !profile) return false;
 
