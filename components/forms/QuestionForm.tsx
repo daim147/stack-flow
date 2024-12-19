@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 import ROUTES from '@/constant/routes';
 import { toast } from '@/hooks/use-toast';
-import { createQuestion } from '@/lib/actions/question.action';
+import { createQuestion, editQuestion } from '@/lib/actions/question.action';
 import { AskQuestionSchema } from '@/lib/validations';
 
 import TagCard from '../card/TagCard';
@@ -31,7 +31,12 @@ const Editor = dynamic(() => import('@/components/editor'), {
 	ssr: false,
 });
 
-const QuestionForm = () => {
+interface QuestionFormProps {
+	question?: Question;
+	isEditable?: boolean;
+}
+
+const QuestionForm: React.FC<QuestionFormProps> = ({ question, isEditable }) => {
 	const editorRef = useRef<MDXEditorMethods>(null);
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
@@ -39,9 +44,9 @@ const QuestionForm = () => {
 	const form = useForm<z.infer<typeof AskQuestionSchema>>({
 		resolver: zodResolver(AskQuestionSchema),
 		defaultValues: {
-			title: '',
-			content: '',
-			tags: [],
+			title: question?.title || '',
+			content: question?.content || '',
+			tags: question?.tags.map((tag) => tag.name) || [],
 		},
 	});
 
@@ -49,7 +54,6 @@ const QuestionForm = () => {
 		e: React.KeyboardEvent<HTMLInputElement>,
 		field: { value: string[] }
 	) => {
-		console.log(field, e);
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			const tagInput = e.currentTarget.value.trim();
@@ -87,17 +91,19 @@ const QuestionForm = () => {
 
 	const handleCreateQuestion = async (data: z.infer<typeof AskQuestionSchema>) => {
 		startTransition(async () => {
-			const result = await createQuestion(data);
-			console.log('🚀 ~ startTransition ~ result:', result);
+			const result =
+				isEditable && question
+					? await editQuestion({ questionId: question?._id, ...data })
+					: await createQuestion(data);
 
 			if (result.success) {
 				toast({
 					title: 'success',
-					description: 'Question created successfully',
+					description: `Question ${isEditable ? 'updated' : 'created'} successfully`,
 				});
 
 				if (result.data) {
-					router.push(ROUTES.QUESTION(result.data._id));
+					router.push(ROUTES.QUESTIONS(result.data._id));
 				} else {
 					toast({
 						title: `Error ${result.status}`,
@@ -207,7 +213,7 @@ const QuestionForm = () => {
 								<span>Submitting...</span>
 							</>
 						) : (
-							'Ask A Question'
+							<>{isEditable ? 'Update Question' : 'Ask Question'}</>
 						)}
 					</Button>
 				</div>

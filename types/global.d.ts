@@ -13,6 +13,7 @@ declare global {
 
 	interface Question {
 		_id: string;
+		content: string;
 		title: string;
 		createdAt: Date;
 		tags: Tag[];
@@ -33,7 +34,7 @@ declare global {
 	}
 
 	type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
-	type ErrorResponse = ActionResponse & { success: false };
+	type ErrorResponse = ActionResponse<undefined> & { success: false };
 
 	type APIErrorResponse = NextResponse<ErrorResponse>;
 

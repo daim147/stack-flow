@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
-import { ActionResponse, APIErrorResponse, ErrorResponse } from '@/types/global';
-
 import { RequestError, ValidationError } from '../http-error';
 import logger from '../logger';
 
