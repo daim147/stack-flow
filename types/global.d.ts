@@ -37,11 +37,18 @@ declare global {
 	type ErrorResponse = ActionResponse<undefined> & { success: false };
 
 	type APIErrorResponse = NextResponse<ErrorResponse>;
-
 	type APISuccessResponse<T = null> = NextResponse<SuccessResponse<T> | ErrorResponses>;
 
 	interface RouteParams {
 		params: Promise<Record<string, string>>;
 		searchParams: Promise<Record<string, string>>;
+	}
+
+	interface PaginatedSearchParams {
+		page?: number;
+		pageSize?: number;
+		query?: string;
+		filter?: string;
+		sort?: string;
 	}
 }

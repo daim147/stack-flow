@@ -20,7 +20,8 @@ export const getDevIconClassName = (techName: string) => {
  * @param date - The date to compare with the current time.
  * @returns A string representing the time elapsed since the given date, e.g., "2 days ago", "just now".
  */
-export const getTimeStamp = (date: Date) => {
+export const getTimeStamp = (createdAt: Date) => {
+	const date = new Date(createdAt);
 	const now = new Date();
 	const secondsAgo = Math.floor((now.getTime() - date.getTime()) / 1000);
 

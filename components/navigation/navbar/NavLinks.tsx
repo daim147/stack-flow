@@ -10,14 +10,12 @@ import { cn } from '@/lib/utils';
 
 const NavLinks = ({ isMobileNav = false, userId }: { isMobileNav?: boolean; userId?: string }) => {
 	const pathname = usePathname();
-	console.log('🚀 ~ NavLinks ~ pathname:', pathname);
 
 	return (
 		<>
 			{sidebarLinks.map((item) => {
 				const isActive =
 					(pathname.includes(item.route) && item.route.length > 1) || pathname === item.route;
-				console.log('🚀 ~ {sidebarLinks.map ~ isActive:', isActive, pathname, item.route);
 
 				if (item.route === '/profile') {
 					if (userId) item.route = `${item.route}/${userId}`;

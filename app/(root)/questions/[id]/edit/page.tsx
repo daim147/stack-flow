@@ -22,7 +22,7 @@ const EditQuestion = async ({ params }: RouteParams) => {
 		console.error('Question not found');
 		return notFound();
 	}
-	if (question?.author._id.toString() !== session?.user?.id) {
+	if (question?.author.toString() !== session?.user?.id) {
 		console.error('Unauthorized');
 		return redirect(ROUTES.QUESTIONS(id));
 	}
